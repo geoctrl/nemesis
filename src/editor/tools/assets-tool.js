@@ -4,6 +4,7 @@ import { Scoped } from 'kremling';
 
 export function AssetsTool() {
   const [assets, updateAssets] = useState([]);
+  let blankImg = document.createElement("img");
 
   assetsState.subscribe(({ assets }) => {
     updateAssets(assets);
@@ -13,8 +14,10 @@ export function AssetsTool() {
     console.log(JSON.parse(JSON.stringify(e.target.files[0])))
   }
 
-  function onDragStart(asset) {
-    console.log(asset)
+  function onDragStart(e, asset) {
+    blankImg.src = asset.url;
+    e.dataTransfer.setDragImage(blankImg, 10, 10);
+    e.dataTransfer.setData("text/plain", JSON.stringify(asset));
   }
 
   return (
@@ -24,8 +27,7 @@ export function AssetsTool() {
         {assets.map(asset => (
           <div
             draggable
-            onDragStart={() => onDragStart(asset)}
-            onDragEnd={(e) => console.log(e)}
+            onDragStart={(e) => onDragStart(e, asset)}
             key={asset.id}
             className="assets-item"
           >

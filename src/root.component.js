@@ -5,7 +5,7 @@ import { Scoped } from 'kremling';
 
 import './canvas-state';
 import { assetsState } from './engine/assets-state';
-import { Sidebar } from "./editor/layout/sidebar";
+import { Sidebar } from './editor/layout/sidebar';
 
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
@@ -40,12 +40,23 @@ export function Root() {
     console.log(canvas);
   }
 
+  function onDrop(e) {
+    e.preventDefault();
+    const asset = JSON.parse(e.dataTransfer.getData('text/plain'));
+    console.log(asset.id);
+  }
+
+  function onDragOver(e) {
+    e.preventDefault();
+  }
+
   return (
     <Scoped css={css}>
       <div className="layout-container">
         <div
           className="layout-canvas"
-          onDrop={e => console.log('files dropped', e)}
+          onDrop={onDrop}
+          onDragOver={onDragOver}
           ref={canvasWrapperRef}
         />
         <Sidebar />

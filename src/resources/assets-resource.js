@@ -2,21 +2,21 @@
 export function getAssets() {
   return Promise.resolve([
     {
-      id: 'abc',
+      id: 'barrel01',
       name: 'barrel01',
       fileName: 'barrel01.png',
       type: 'png',
       url: 'https://nemesis.app/assets/barrel01.png',
     },
     {
-      id: 'efg',
+      id: 'barrel02',
       name: 'barrel02',
       fileName: 'barrel02.png',
       type: 'png',
       url: 'https://nemesis.app/assets/barrel02.png',
     },
     {
-      id: 'hij',
+      id: 'barrel03',
       name: 'barrel03',
       fileName: 'barrel03.png',
       type: 'png',
