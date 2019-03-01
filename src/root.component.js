@@ -12,15 +12,10 @@ settings.SCALE_MODE = SCALE_MODES.NEAREST;
 export function Root() {
   const ratio = window.devicePixelRatio;
   const canvasWrapperRef = useRef(null);
-  const [isInit, updateIsInit] = useState(false);
 
   useEffect(() => {
-    if (!isInit) {
-      updateIsInit(true);
-      assetsState.getAssets();
-      init();
-    }
-  });
+    init();
+  }, []);
 
   const init = () => {
     const application = new Application({
@@ -30,7 +25,7 @@ export function Root() {
       forceCanvas: true,
     });
 
-    let texture = Texture.from('./temp_assets/barrel01.png');
+    let texture = Texture.from(assetsState.state.assets[0].url);
     let sprite = new Sprite(texture);
     sprite.x = 100;
     sprite.y = 100;

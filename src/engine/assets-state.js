@@ -1,13 +1,16 @@
 import SimpleState from '@geoctrl/simple-state';
-import { getAssets } from '../resources/assets-resource';
+import { getAssets } from '../core/assets-api';
 
 class AssetsState extends SimpleState {
   constructor(config) {
     super(config);
   }
-  getAssets() {
-    getAssets().then(
-      assets => this.set({ assets })
+  get() {
+    return getAssets().then(
+      assets => {
+        this.set({ assets })
+        return assets;
+      }
     );
   }
 }

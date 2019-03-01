@@ -3,7 +3,7 @@ import { assetsState } from '../../engine/assets-state';
 import { Scoped } from 'kremling';
 
 export function AssetsTool() {
-  const [assets, updateAssets] = useState([]);
+  const [assets, updateAssets] = useState(assetsState.state.assets);
   let blankImg = document.createElement("img");
 
   assetsState.subscribe(({ assets }) => {

@@ -11,6 +11,8 @@ config.output = {
   publicPath: '/',
 };
 
+config.mode = 'development';
+
 config.module = {
   rules: [
     {

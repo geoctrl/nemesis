@@ -1,8 +1,8 @@
 const config = require('./webpack.config');
 const webpack = require('webpack');
 
-config.mode = 'development';
-// config.devtool = 'source-map';
+config.mode = 'production';
+config.devtool = false;
 config.plugins.push(
   new webpack.DefinePlugin({
     PRODUCTION: JSON.stringify(false),
