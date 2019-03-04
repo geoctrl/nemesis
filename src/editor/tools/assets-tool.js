@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { assetsState } from '../../engine/assets-state';
-import { Scoped } from 'kremling';
+import { assetsState } from '../state/assets-state';
+import { useCss } from 'kremling';
 
 export function AssetsTool() {
   const [assets, updateAssets] = useState(assetsState.state.assets);
   let blankImg = document.createElement("img");
+  const scope = useCss(css);
 
   assetsState.subscribe(({ assets }) => {
     updateAssets(assets);
@@ -21,8 +22,7 @@ export function AssetsTool() {
   }
 
   return (
-    <Scoped css={css}>
-      <div>
+      <div {...scope}>
         <input type="file" onChange={handleFileUpload} />
         {assets.map(asset => (
           <div
@@ -40,7 +40,6 @@ export function AssetsTool() {
           </div>
         ))}
       </div>
-    </Scoped>
   );
 }
 

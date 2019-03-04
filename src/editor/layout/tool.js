@@ -1,16 +1,15 @@
 import React from 'react';
-import { Scoped } from 'kremling';
+import { useCss } from 'kremling';
 
 export function Tool(props) {
+  const scope = useCss(css);
   return (
-    <Scoped css={css}>
-      <div className="tool">
-        <div className="tool__title">
-          {props.title}
-        </div>
-        {props.children}
+    <div {...scope} className="tool">
+      <div className="tool__title">
+        {props.title}
       </div>
-    </Scoped>
+      {props.children}
+    </div>
   );
 }
 

@@ -1,17 +1,16 @@
 import React from 'react';
-import { Scoped } from 'kremling';
+import { useCss } from 'kremling';
 import { Tool } from "./tool";
 import { AssetsTool } from "../tools/assets-tool";
 
 export function Sidebar() {
+  const scope = useCss(css);
   return (
-  <Scoped css={css}>
-    <div className="sidebar">
+    <div {...scope} className="sidebar">
       <Tool title="Assets">
         <AssetsTool/>
       </Tool>
     </div>
-  </Scoped>
   );
 }
 

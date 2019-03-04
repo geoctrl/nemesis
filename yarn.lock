@@ -3593,10 +3593,10 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
   integrity sha512-s5kLOcnH0XqDO+FvuaLX8DDjZ18CGFk7VygH40QoKPUQhW4e2rvM0rwUq0t8IQDOwYSeLK01U90OjzBTme2QqA==
 
-kremling@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/kremling/-/kremling-1.2.0.tgz#58a830d8009090da52a53a6de7470189d031802f"
-  integrity sha512-rx6EabKvVOhiKCVHKY11LGrzdvVdPW34q2J2wImTsud0tE3vUPT14C2IT7Q8WcuoUBu4pZwkYn8n1b6wkp2HXA==
+kremling@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/kremling/-/kremling-1.2.3.tgz#e97d6580dd034b24a8e8738ce7f2857686fa5041"
+  integrity sha512-s+561A0X5SdUseizfMewCu4oc6xCPWRic8jYHXv1WVyKx59r7NqVy6S41879lBTX6LeguWMTCRaTijSJhmgHSg==
 
 lcid@^1.0.0:
   version "1.0.0"
