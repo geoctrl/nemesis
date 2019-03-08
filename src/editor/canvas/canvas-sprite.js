@@ -1,14 +1,9 @@
 import { Sprite, Texture } from 'pixi.js';
-import { assetsState } from '../state/assets-state';
 
-class CanvasSprite {
-  constructor(url) {
-    // todo: need to do this in here:
-    // let texture = Texture.from(url);
-    // let sprite = new Sprite(texture);
-    // sprite.x = 100;
-    // sprite.y = 100;
-    // application.stage.addChild(sprite);
-
+export class CanvasSprite {
+  constructor(asset) {
+    this.asset = asset;
+    this.texture = Texture.from(asset.url);
+    this.container = new Sprite(this.texture);
   }
 }

@@ -31,6 +31,7 @@ export class Canvas extends Component {
   init = () => {
     const application = editorState.state.pixiApplication;
     application.renderer.backgroundColor = gameState.state.backgroundColor;
+    editorState.addSprite(assetsState.get().assets[0], { x: 100, y: 100 });
     const canvasEl = this.canvasWrapperRef.current.appendChild(application.view);
   }
 
