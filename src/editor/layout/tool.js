@@ -1,19 +1,21 @@
-import React from 'react';
-import { useCss } from 'kremling';
+import React, { Component } from 'react';
+import { Scoped } from 'kremling';
 
-export function Tool(props) {
-  const scope = useCss(css);
-  return (
-    <div {...scope} className="tool">
-      <div className="tool__title">
-        {props.title}
-      </div>
-      {props.children}
-    </div>
-  );
+export class Tool extends Component {
+  render() {
+    const { title, children } = this.props;
+    return (
+      <Scoped css={css}>
+        <div className="tool">
+          <div className="tool__title">
+            {title}
+          </div>
+          {children}
+        </div>
+      </Scoped>
+    );
+  }
 }
-
-Tool.propTypes = {};
 
 const css = `
   & .tool {

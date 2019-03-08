@@ -5,6 +5,8 @@ module.exports = [
     fileName: 'barrel01.png',
     type: 'png',
     url: '/temp_assets/barrel01.png',
+    width: 100,
+    height: 100,
   },
   {
     id: 2,
@@ -12,6 +14,8 @@ module.exports = [
     fileName: 'barrel02.png',
     type: 'png',
     url: '/temp_assets/barrel02.png',
+    width: 100,
+    height: 100,
   },
   {
     id: 3,
@@ -19,5 +23,7 @@ module.exports = [
     fileName: 'barrel03.png',
     type: 'png',
     url: '/temp_assets/barrel03.png',
+    width: 100,
+    height: 100,
   },
 ];

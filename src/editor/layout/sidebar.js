@@ -1,20 +1,21 @@
-import React from 'react';
-import { useCss } from 'kremling';
+import React, { Component } from 'react';
+import { Scoped } from 'kremling';
 import { Tool } from "./tool";
 import { AssetsTool } from "../tools/assets-tool";
 
-export function Sidebar() {
-  const scope = useCss(css);
-  return (
-    <div {...scope} className="sidebar">
-      <Tool title="Assets">
-        <AssetsTool/>
-      </Tool>
-    </div>
-  );
+export class Sidebar extends Component {
+  render() {
+    return (
+      <Scoped css={css}>
+        <div className="sidebar">
+          <Tool title="Assets">
+            <AssetsTool/>
+          </Tool>
+        </div>
+      </Scoped>
+    );
+  }
 }
-
-Sidebar.propTypes = {};
 
 const css = `
   & .sidebar {

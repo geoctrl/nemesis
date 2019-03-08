@@ -1,46 +1,66 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import { assetsState } from '../state/assets-state';
-import { useCss } from 'kremling';
+import { Scoped } from 'kremling';
 
-export function AssetsTool() {
-  const [assets, updateAssets] = useState(assetsState.state.assets);
-  let blankImg = document.createElement("img");
-  const scope = useCss(css);
+let blankImg = document.createElement("img");
 
-  assetsState.subscribe(({ assets }) => {
-    updateAssets(assets);
-  }, 'assets');
-
-  function handleFileUpload(e) {
-    console.log(JSON.parse(JSON.stringify(e.target.files[0])))
+export class AssetsTool extends Component {
+  constructor(props) {
+    super(props);
+    assetsState.subscribe(({ assets }) => {
+      this.setState({ assets });
+    }, 'assets');
   }
 
-  function onDragStart(e, asset) {
+  state = {
+    assets: assetsState.state.assets,
+  };
+
+  handleFileUpload = (e) => {
+    console.log(e.target.files)
+  }
+
+  onDragStart = (e, asset) => {
     blankImg.src = asset.url;
     e.dataTransfer.setDragImage(blankImg, 10, 10);
     e.dataTransfer.setData("text/plain", JSON.stringify(asset));
   }
 
-  return (
-      <div {...scope}>
-        <input type="file" onChange={handleFileUpload} />
-        {assets.map(asset => (
-          <div
-            draggable
-            onDragStart={(e) => onDragStart(e, asset)}
-            key={asset.id}
-            className="assets-item"
-          >
-            <div className="assets-item__img">
-              <img src={asset.url} alt=""/>
+  onload = () => {
+    const img = new Image;
+
+    img.onload = function() {
+      console.log('img', img.width);
+    }
+
+    img.src = fr.result;
+  }
+
+  render() {
+    const { assets } = this.state;
+    return (
+      <Scoped css={css}>
+        <div>
+          <input type="file" onChange={this.handleFileUpload} />
+          {assets.map(asset => (
+            <div
+              draggable
+              onDragStart={(e) => this.onDragStart(e, asset)}
+              key={asset.id}
+              className="assets-item"
+            >
+              <div className="assets-item__img">
+                <img src={asset.url} alt=""/>
+              </div>
+              <div>
+                {asset.fileName}
+              </div>
             </div>
-            <div>
-              {asset.fileName}
-            </div>
-          </div>
-        ))}
-      </div>
-  );
+          ))}
+        </div>
+      </Scoped>
+    );
+  };
 }
 
 AssetsTool.propTypes = {};
