@@ -10,6 +10,7 @@ import { getAssets } from './core/assets-api';
 import { gameState } from './editor/state/game-state';
 import { assetsState } from './editor/state/assets-state';
 import { editorState } from './editor/state/editor-state';
+import { CanvasSelect } from './editor/canvas/canvas-select';
 
 export class Root extends Component {
   state = {
@@ -25,10 +26,13 @@ export class Root extends Component {
       // set asset state
       assetsState.set({ assets });
 
+      const spriteSelector = new CanvasSelect();
+
       // set editor state
       const activeScene = gameState.state.scenes[0];
       editorState.set({
         activeSceneId: activeScene.id,
+        spriteSelector: spriteSelector,
         pixiApplication: new Application({
           antialias: true,
           resolution: gameState.state.scale,
@@ -38,12 +42,15 @@ export class Root extends Component {
         }),
       });
 
+      editorState.state.pixiApplication.stage.addChild(spriteSelector.container);
+
       this.setState({ loading: false });
     })
   }
 
   render() {
     if (this.state.loading) return <div>loading</div>;
+    console.log('here')
 
     return (
       <Scoped css={css}>

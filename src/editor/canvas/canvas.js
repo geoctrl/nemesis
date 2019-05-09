@@ -5,7 +5,6 @@ import { Scoped } from 'kremling';
 import { CanvasScroll } from "./canvas-scroll";
 import { editorState } from '../state/editor-state';
 import { gameState } from '../state/game-state';
-import { assetsState } from '../state/assets-state';
 
 export class Canvas extends Component {
   constructor(props) {
@@ -31,14 +30,13 @@ export class Canvas extends Component {
   init = () => {
     const application = editorState.state.pixiApplication;
     application.renderer.backgroundColor = gameState.state.backgroundColor;
-    editorState.addSprite(assetsState.get().assets[0], { x: 100, y: 100 });
     const canvasEl = this.canvasWrapperRef.current.appendChild(application.view);
   }
 
   onDrop = (e) => {
     e.preventDefault();
     const asset = JSON.parse(e.dataTransfer.getData('text/plain'));
-    console.log(asset.id);
+    editorState.spriteAdd(asset, e.clientX, e.clientY);
   }
 
   onDragOver = (e) => {
