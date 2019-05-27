@@ -1,0 +1,97 @@
+
+$color-primary: #6F9CEB;
+$color-success: #00A878;
+$color-warning: #FDE74C;
+$color-danger: #EF5B55;
+$color-info: #987284;
+$color-dark: #2B303A;
+
+$color-grey-10: #E5E9EE;
+$color-grey-25: #CBD3DD;
+$color-grey-50: #BEC8D5;
+$color-grey-75: #B1BDCC;
+$color-grey-100: #A4B2C4;
+$color-grey-200: #97A3B3;
+$color-grey-300: #8A95A3;
+$color-grey-400: #7D8692;
+$color-grey-500: #707882;
+$color-grey-600: #626971;
+$color-grey-700: #555A60;
+$color-grey-800: #484C50;
+$color-grey-820: #45494D;
+$color-grey-840: #434649;
+$color-grey-860: #404346;
+$color-grey-880: #3E4042;
+$color-grey-900: #3B3D3F;
+$color-grey-920: #343637;
+$color-grey-940: #2E2F30;
+$color-grey-960: #272728;
+$color-grey-980: #202020;
+$color-grey-1000: #101010;
+
+$base-font-family: 'neue-haas-unica', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+$root-font-size: 62.5%;
+$base-font-size: 1.4rem;
+$base-font-color: $color-grey-10;
+$base-font-weight: 400;
+$base-line-height: 1.4;
+$base-border-radius: 0.4rem;
+$base-transition-duration: 200ms;
+
+$box-shadow-1: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.12);
+$box-shadow-2: 0 3px 6px rgba(0,0,0,0.1), 0 3px 6px rgba(0,0,0,0.11);
+$box-shadow-3: 0 10px 20px rgba(0,0,0,0.17), 0 6px 6px rgba(0,0,0,0.11);
+$box-shadow-4: 0 14px 28px rgba(0,0,0,0.13), 0 10px 10px rgba(0,0,0,0.10);
+$box-shadow-5: 0 19px 38px rgba(0,0,0,0.18), 0 15px 12px rgba(0,0,0,0.10);
+
+$focus-box-shadow: 0 0 0 .3rem rgba(51, 153, 255, .5);
+
+
+body {
+  --color-primary: #{$color-primary};
+  --color-success: #{$color-success};
+  --color-warning: #{$color-warning};
+  --color-danger: #{$color-danger};
+  --color-info: #{$color-info};
+  --color-dark: #{$color-dark};
+
+  --color-grey-10: #{$color-grey-10};
+  --color-grey-25: #{$color-grey-25};
+  --color-grey-50: #{$color-grey-50};
+  --color-grey-75: #{$color-grey-75};
+  --color-grey-100: #{$color-grey-100};
+  --color-grey-200: #{$color-grey-200};
+  --color-grey-300: #{$color-grey-300};
+  --color-grey-400: #{$color-grey-400};
+  --color-grey-500: #{$color-grey-500};
+  --color-grey-600: #{$color-grey-600};
+  --color-grey-700: #{$color-grey-700};
+  --color-grey-800: #{$color-grey-800};
+  --color-grey-820: #{$color-grey-820};
+  --color-grey-840: #{$color-grey-840};
+  --color-grey-860: #{$color-grey-860};
+  --color-grey-880: #{$color-grey-880};
+  --color-grey-900: #{$color-grey-900};
+  --color-grey-920: #{$color-grey-920};
+  --color-grey-940: #{$color-grey-940};
+  --color-grey-960: #{$color-grey-960};
+  --color-grey-980: #{$color-grey-980};
+  --color-grey-1000: #{$color-grey-1000};
+
+  --base-font-family: #{$base-font-family};
+  --root-font-size: #{$root-font-size};
+  --base-font-size: #{$base-font-size};
+  --base-font-color: #{$base-font-color};
+  --base-font-weight: #{$base-font-weight};
+  --base-line-height: #{$base-line-height};
+  --base-border-radius: #{$base-border-radius};
+  --base-transition-duration: #{$base-transition-duration};
+
+  --box-shadow-1: #{$box-shadow-1};
+  --box-shadow-2: #{$box-shadow-2};
+  --box-shadow-3: #{$box-shadow-3};
+  --box-shadow-4: #{$box-shadow-4};
+  --box-shadow-5: #{$box-shadow-5};
+
+  --focus-box-shadow: #{$focus-box-shadow};
+}

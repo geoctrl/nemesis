@@ -2,6 +2,7 @@ const path = require('path');
 const IcosetWebpackPlugin = require('@icoset/icoset-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const icons = require('./icons');
+const Fiber = require('fibers');
 
 const config = {};
 config.entry = path.resolve(__dirname, 'src/index.js');
@@ -22,8 +23,28 @@ config.module = {
     },
     {
       test: /\.scss$/,
+      exclude: [/node_modules/, /main\.scss$/],
+      use: [
+        'kremling-loader',
+        {
+          loader: 'sass-loader',
+          options: {
+            implementation: require("sass"),
+            fiber: Fiber,
+          },
+        },
+      ],
+    },
+    {
+      test: /main\.scss$/,
       exclude: /node_modules/,
-      use: ['style-loader', 'css-loader', 'fast-sass-loader'],
+      use: ['style-loader', 'css-loader', {
+        loader: 'sass-loader',
+        options: {
+          implementation: require("sass"),
+          fiber: Fiber,
+        },
+      }],
     },
     {
       test: /\.svg$/,
@@ -34,13 +55,13 @@ config.module = {
 };
 
 config.plugins = [
-  // new IcosetWebpackPlugin({
-  //   directory: path.resolve(
-  //     __dirname,
-  //     'node_modules/@fortawesome/fontawesome-pro/svgs'
-  //   ),
-  //   icons,
-  // }),
+  new IcosetWebpackPlugin({
+    directory: path.resolve(
+      __dirname,
+      'node_modules/@fortawesome/fontawesome-pro/svgs'
+    ),
+    icons,
+  }),
   new HtmlWebpackPlugin({
     template: path.resolve(__dirname, 'src/index.html'),
   }),
