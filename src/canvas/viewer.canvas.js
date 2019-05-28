@@ -1,4 +1,6 @@
 import { Graphics, Container } from 'pixi.js';
+import { Grid } from './grid.canvas';
+import { isBoolean, isNumber } from 'lodash';
 
 const scrollBarSize = 10;
 const scrollSpacing = 4;
@@ -8,14 +10,15 @@ const zoneColor = 0x2E2F30;
 const scrollBarAlpha = 1;
 const scrollBarColor = 0x3E4042;
 
-export class Scroll {
-  constructor(canvasEl, width, height) {
+export class Viewer {
+  constructor(canvasEl, width, height, opts = {}) {
     this.canvasEl = canvasEl;
     this.viewContainer = new Container();
     this.scrollContainer = new Container();
     this.background = new Graphics();
     this.width = width;
     this.height = height;
+    this.scale = 1;
     this.positionY = 0;
     this.positionX = 0;
     this.scrollZoneY = new Graphics();
@@ -23,6 +26,9 @@ export class Scroll {
     this.scrollBarY = new Graphics();
     this.scrollBarX = new Graphics();
     this.bottomFill = new Graphics();
+    this.gridShow = isBoolean(opts.gridShow) ? opts.gridShow : false;
+    this.gridSpacing = isNumber(opts.gridSpacing) && opts.gridSpacing > 0 ? opts.gridSpacing : 32;
+    this.grid = new Grid(width, height, this.gridShow, this.gridSpacing);
 
     this.scrollContainer.addChild(this.scrollZoneY);
     this.scrollContainer.addChild(this.scrollZoneX);
@@ -30,15 +36,47 @@ export class Scroll {
     this.scrollContainer.addChild(this.scrollBarX);
     this.scrollContainer.addChild(this.bottomFill);
     this.viewContainer.addChild(this.background);
+    this.viewContainer.addChild(this.grid.container);
     this.events();
     this.update();
+
+    const publicApi = {
+      update: this.update,
+      onDestroy: this.onDestroy,
+      viewContainer: this.viewContainer,
+      scrollContainer: this.scrollContainer,
+      width: this.width,
+      height: this.height,
+      scale: this.scale,
+      gridShow: this.gridShow,
+      gridSpacing: this.gridSpacing,
+    };
+
+    const validator = {
+      set: (obj, prop, value) => {
+        if (prop === 'width') this.setWidth(value);
+        if (prop === 'height') this.setHeight(value);
+        if (prop === 'scale') this.setScale(value);
+        if (prop === 'gridShow') this.showGrid(value);
+        if (prop === 'gridSpacing') this.setGridSpacing(value);
+        obj[prop] = value;
+        return true;
+      },
+    };
+    return new Proxy(publicApi, validator);
   }
 
   events = () => {
-    this.canvasEl.addEventListener('wheel', this.onScroll);
+    this.canvasEl.addEventListener('wheel', this.update);
   }
 
-  onScroll = ({ deltaX = 0, deltaY = 0 } = {}) => {
+  onDestroy = () => {
+    this.canvasEl.removeEventListener('wheel', this.update);
+    this.viewContainer.destroy();
+    this.scrollContainer.destroy();
+  }
+
+  update = ({ deltaX = 0, deltaY = 0 } = {}) => {
     const { clientWidth, clientHeight } = this.canvasEl;
 
     // background
@@ -51,11 +89,13 @@ export class Scroll {
     this.bottomFill.beginFill(0x343637);
     this.bottomFill.drawRect(this.canvasEl.width - zoneSize, this.canvasEl.height - zoneSize, zoneSize, zoneSize);
 
+    // grid
+    this.grid.setSizes(this.width, this.height);
 
     // x
     const newPositionX = this.positionX + (deltaX / 6);
     const fullX = clientWidth - zoneSize - (scrollSpacing * 2);
-    const percentageX = (clientWidth - zoneSize) / this.width;
+    const percentageX = (clientWidth - zoneSize) / (this.width * this.scale);
     if (percentageX < 1) {
       const scrollBarWidth = fullX * percentageX;
       if (newPositionX < 0) {
@@ -65,15 +105,15 @@ export class Scroll {
       } else {
         this.positionX = newPositionX;
       }
-      this.viewContainer.x = -Math.floor(this.positionX * (this.width - clientWidth + zoneSize) / (fullX - scrollBarWidth));
+      this.viewContainer.x = -Math.floor(this.positionX * ((this.width * this.scale) - clientWidth + zoneSize) / (fullX - scrollBarWidth));
     } else {
-      this.viewContainer.x = Math.floor(((this.canvasEl.width - this.width) / 2) - (zoneSize / 2));
+      this.viewContainer.x = Math.floor(((this.canvasEl.width - (this.width * this.scale)) / 2) - (zoneSize / 2));
     }
 
     // y
     const newPositionY = this.positionY + (deltaY / 6);
     const fullY = clientHeight - zoneSize - (scrollSpacing * 2);
-    const percentageY = (clientHeight - zoneSize) / this.height;
+    const percentageY = (clientHeight - zoneSize) / (this.height * this.scale);
     if (percentageY < 1) {
       const scrollBarHeight = fullY * percentageY;
       if (newPositionY < 0) {
@@ -83,23 +123,23 @@ export class Scroll {
       } else {
         this.positionY = newPositionY;
       }
-      this.viewContainer.y = -Math.floor(this.positionY * (this.height - clientHeight + zoneSize) / (fullY - scrollBarHeight));
+      this.viewContainer.y = -Math.floor(this.positionY * ((this.height * this.scale) - clientHeight + zoneSize) / (fullY - scrollBarHeight));
     } else {
-      this.viewContainer.y = Math.floor(((this.canvasEl.height - this.height) / 2) - (zoneSize / 2));
+      this.viewContainer.y = Math.floor(((this.canvasEl.height - (this.height * this.scale)) / 2) - (zoneSize / 2));
     }
 
-    this.updateX();
-    this.updateY();
+    this.updateScrollX();
+    this.updateScrollY();
   }
 
 
-  updateX = () => {
+  updateScrollX = () => {
     const { clientWidth, clientHeight } = this.canvasEl;
     this.scrollZoneX.clear();
     this.scrollBarX.clear();
 
-    if (this.width <= 0) return;
-    const percentage = (clientWidth - zoneSize) / this.width;
+    if ((this.width * this.scale) <= 0) return;
+    const percentage = (clientWidth - zoneSize) / (this.width * this.scale);
 
     // scrollZone
     this.scrollZoneX.beginFill(zoneColor, 1);
@@ -116,13 +156,13 @@ export class Scroll {
     this.scrollBarX.endFill();
   }
 
-  updateY = () => {
+  updateScrollY = () => {
     const { clientWidth, clientHeight } = this.canvasEl;
     this.scrollZoneY.clear();
     this.scrollBarY.clear();
 
-    if (this.height <= 0) return;
-    const percentage = (clientHeight - zoneSize) / this.height;
+    if ((this.height * this.scale) <= 0) return;
+    const percentage = (clientHeight - zoneSize) / (this.height * this.scale);
 
     // scrollZone
     this.scrollZoneY.beginFill(zoneColor, 1);
@@ -139,20 +179,32 @@ export class Scroll {
     this.scrollBarY.endFill();
   }
 
-  update = () => {
-    this.onScroll();
+  setScale = (scale) => {
+    this.scale = scale;
+    this.viewContainer.scale = { x: scale, y: scale };
+    this.update();
   }
 
   setWidth = (width) => {
     this.width = width;
     this.viewContainer.x = 0;
-    this.onScroll();
+    this.update();
   }
 
   setHeight = (height) => {
     this.height = height;
     this.viewContainer.y = 0;
-    this.onScroll();
+    this.update();
+  }
+
+  showGrid = (gridShow) => {
+    this.gridShow = gridShow;
+    this.grid.setShow(gridShow);
+  }
+
+  setGridSpacing = (gridSpacing) => {
+    this.gridSpacing = gridSpacing;
+    this.grid.setSpacing(gridSpacing);
   }
 
 }

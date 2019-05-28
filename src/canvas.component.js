@@ -1,11 +1,11 @@
 import React, { Component, createRef } from 'react';
+import { number } from 'prop-types';
 import { Scoped, k } from 'kremling';
 import { Application, Graphics } from "pixi.js";
-import { Scroll } from './canvas/scroll.canvas';
-import { Grid } from './canvas/grid.canvas';
+import { Viewer } from './canvas/viewer.canvas';
 
-const gameWidth = 600;
-const gameHeight = 400;
+const gameWidth = 1920;
+const gameHeight = 1080;
 
 export class CanvasComponent extends Component {
   constructor(props) {
@@ -14,15 +14,19 @@ export class CanvasComponent extends Component {
     window.addEventListener('resize', () => {
       const { clientWidth, clientHeight } = this.canvasWrapperRef.current;
       this.application.renderer.resize(clientWidth, clientHeight);
-      this.scroll.update();
+      this.viewer.update();
     })
   }
 
+  static propTypes = {
+    parentWidth: number,
+  }
+
   componentDidUpdate(prevProps) {
-    if (prevProps.size !== this.props.size) {
+    if (prevProps.parentWidth !== this.props.parentWidth) {
       const { clientWidth } = this.canvasWrapperRef.current;
       this.application.renderer.resize(clientWidth, this.canvasEl.height);
-      this.scroll.update();
+      this.viewer.update();
     }
   }
 
@@ -42,14 +46,24 @@ export class CanvasComponent extends Component {
     this.canvasEl = this.canvasWrapperRef.current.appendChild(this.application.view);
 
     // Scroll instance
-    this.scroll = new Scroll(this.canvasEl, gameWidth, gameHeight);
-    const { viewContainer, scrollContainer } = this.scroll;
-    const grid = new Grid(gameWidth, gameHeight, 32);
+    this.viewer = new Viewer(this.canvasEl, gameWidth, gameHeight, { gridShow: true, gridSpacing: 50 });
+    const { viewContainer, scrollContainer } = this.viewer;
 
     // view container - add all content into this
     this.application.stage.addChild(viewContainer);
     this.application.stage.addChild(scrollContainer);
-    viewContainer.addChild(grid.container);
+
+    const circle = new Graphics();
+    circle.beginFill(0xFF00FF);
+    circle.drawCircle(300, 300, 100);
+    circle.endFill();
+
+    viewContainer.addChild(circle);
+
+    setTimeout(() => {
+
+    }, 2000);
+
   }
 
   render() {
@@ -72,8 +86,4 @@ const css = k`
     position: relative;
     height: 100%;
   }
-  
-  .canvas-layout canvas {
-  }
-  
 `;

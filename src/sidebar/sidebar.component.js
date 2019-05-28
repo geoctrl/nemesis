@@ -17,6 +17,5 @@ const css = k`
   .sidebar {
     background-color: var(--color-grey-860);
     height: 100%;
-    margin-left: -.1rem;
   }
 `;

@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 import { Scoped, k } from 'kremling';
 
 import { CanvasComponent } from './canvas.component';
-import { Panel, Zone, VERTICAL, HORIZONTAL } from './components/zone.component';
+import { Panel, Zone, VERTICAL } from './components/zone.component';
 import { Sidebar } from './sidebar/sidebar.component';
+import { Editor } from './editor/editor.component';
 
 export class Root extends Component {
   render() {
     return (
       <Scoped css={css}>
         <div className="root-layout">
-          <Zone direction={VERTICAL} lineColor="red">
+          <Zone direction={VERTICAL} lineColor="#484C50">
             <Panel id="editor">
-              {(props) => (
-                <CanvasComponent {...props} />
+              {({ size }) => (
+                <Editor parentWidth={size} />
               )}
             </Panel>
             <Panel id="tools">
