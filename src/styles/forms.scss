@@ -24,25 +24,24 @@
 
 .form-control {
   display: block;
-  border: solid 1px $color-grey-100;
+  border: solid .1rem $color-grey-960;
   width: 100%;
   line-height: 1.2;
+  background-color: $color-grey-940;
   font-family: $base-font-family;
   font-size: $base-font-size;
-  color: $base-font-color;
+  color: $color-grey-50;
   border-radius: $base-border-radius;
   padding: 0 1rem;
   transition: border-color 200ms ease, background-color 200ms ease,
     box-shadow 200ms ease;
   height: 3rem;
-  background-color: #fff;
 
   &:focus {
-    border-color: #80bdff;
-    box-shadow: 0 0 0 0.22rem rgba($color-primary, 0.25);
-    background-color: #fff;
+    border-color: $color-grey-960;
+    box-shadow: $focus-box-shadow;
     outline: none;
-    color: #495057;
+    color: $color-grey-50;
   }
 
   &.inline {
@@ -53,6 +52,13 @@
   &.transparent {
     border-color: transparent;
     background-color: transparent;
+  }
+
+  &.small {
+    height: 2.2rem;
+    line-height: 2.2rem;
+    padding: 0 .6rem;
+    font-size: 1.2rem;
   }
 
   &:disabled {

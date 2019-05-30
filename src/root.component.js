@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Scoped, k } from 'kremling';
 
-import { CanvasComponent } from './canvas.component';
 import { Panel, Zone, VERTICAL } from './components/zone.component';
 import { Sidebar } from './sidebar/sidebar.component';
 import { Editor } from './editor/editor.component';
@@ -17,7 +16,7 @@ export class Root extends Component {
                 <Editor parentWidth={size} />
               )}
             </Panel>
-            <Panel id="tools">
+            <Panel id="tools" size={288} fixed>
               <Sidebar />
             </Panel>
           </Zone>

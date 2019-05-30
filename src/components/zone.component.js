@@ -1,5 +1,5 @@
 import React, { Component, Children, createRef } from 'react';
-import { number, oneOf, oneOfType, string } from 'prop-types';
+import { number, oneOf, oneOfType, string, bool } from 'prop-types';
 import { Scoped, k, a } from 'kremling';
 import { isNumber, isString, isFunction } from 'lodash';
 import uuid from 'uuid/v4';
@@ -34,14 +34,25 @@ export class Zone extends Component {
   }
 
   componentDidMount() {
-    this.setSizes();
+    this.setSizes().then(() => {
+      const childrenArray = Children.toArray(this.props.children);
+      if (!childrenArray.find(child => child.props.fixed)) {
+        childrenArray.forEach((child, i) => {
+          if (child && child.props.id) {
+            localStorage.setItem(`${storagePrefix}.${child.props.id}`, `${this.state.sizes[i]}%`);
+          }
+        })
+      }
+    });
     window.addEventListener('mouseup', this.mouseUpHandler);
     window.addEventListener('mousedown', this.mouseDownHandler);
+    window.addEventListener('resize', this.setSizes);
   }
 
   componentWillUnmount() {
     window.removeEventListener('mouseup', this.mouseUpHandler);
     window.removeEventListener('mousedown', this.mouseDownHandler);
+    window.removeEventListener('resize', this.setSizes);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -55,11 +66,20 @@ export class Zone extends Component {
     const ref = this.zoneRef.current;
     const clientSize = direction === VERTICAL ? ref.clientWidth : ref.clientHeight;
 
-    let sizes = Children.toArray(children).map(child => {
+    let childrenArray = Children.toArray(children);
+    if (childrenArray.filter(child => child.props.fixed).length === childrenArray.length) {
+      console.warn(`[Zone] Cannot have prop "fixed"={true} on all "Panel" components -- all "fixed" props will be ignored.`);
+    }
+
+    let sizes = childrenArray.map(child => {
       const storage = localStorage.getItem(`${storagePrefix}.${child.props.id}`);
       let initialSize = child.props.size || child.props.initialSize;
       if (storage) {
-        initialSize = `${storage}%`;
+        if (storage.indexOf('%') > -1) {
+          initialSize = storage;
+        } else {
+          initialSize = parseFloat(storage);
+        }
       }
       if (isString(initialSize)) {
         return parseFloat(initialSize.replace(/%/g, '')) || null;
@@ -71,7 +91,19 @@ export class Zone extends Component {
       return null;
     });
 
+    // if any of the sizes are null, fill them up with the diff (not equal)
+    const nullSizes = sizes.filter(size => !isNumber(size));
+    if (nullSizes.length) {
+      const rest = sizes.reduce((acc, next) => {
+        return isNumber(next) ? acc + next : acc;
+      }, 0);
+      const diff = (100 - rest) / nullSizes.length;
+      sizes = sizes.map(size => isNumber(size) ? size : diff);
+    }
+
     let total = sizes.reduce((acc, size) => acc + size, 0);
+
+    // equally distribute sizes
     if (total < 100) {
       const diff = (100 - total) / sizes.length;
       sizes = sizes.map(size => size + diff);
@@ -89,7 +121,9 @@ export class Zone extends Component {
     const difference = (100 - total) / emptyCount;
     sizes = sizes.map(size => size || difference);
     const borders = this.buildBorder(sizes);
-    this.setState({ sizes, borders });
+    return new Promise(resolve => {
+      this.setState({ sizes, borders }, resolve);
+    });
   }
 
   buildBorder = (sizes) => {
@@ -169,9 +203,19 @@ export class Zone extends Component {
       document.body.classList.remove('body--panel-dragging');
       document.body.classList.remove(`body--panel-${VERTICAL}`);
       document.body.classList.remove(`body--panel-${HORIZONTAL}`);
-      Children.forEach(this.props.children, (child, i) => {
+      const childrenArray = Children.toArray(this.props.children);
+      childrenArray.forEach((child, i) => {
         if (child && child.props.id) {
-          localStorage.setItem(`${storagePrefix}.${child.props.id}`, this.state.sizes[i]);
+          if (!childrenArray.find(child => child.props.fixed)) {
+            localStorage.setItem(`${storagePrefix}.${child.props.id}`, `${this.state.sizes[i]}%`);
+          } else {
+            if (child.props.fixed) {
+              const { direction } = this.props;
+              const ref = this.zoneRef.current;
+              const clientSize = direction === VERTICAL ? ref.clientWidth : ref.clientHeight;
+              localStorage.setItem(`${storagePrefix}.${child.props.id}`,  `${this.state.sizes[i] * clientSize / 100}`);
+            }
+          }
         }
       })
     }
@@ -248,6 +292,7 @@ export class Panel extends Component {
     minSize: number,
     size: oneOfType([string, number]),
     id: string.isRequired,
+    fixed: bool,
   }
   render() {
     const { children } = this.props;
@@ -268,7 +313,7 @@ const css = k`
   }
   
   .zone.zone--vertical > .panel {
-    border-right: solid .1rem #202020;
+    border-right: solid .1rem var(--color-grey-920);
   }
 
   .zone.zone--vertical > .panel:last-child {
@@ -296,7 +341,7 @@ const css = k`
   }
 
   .zone.zone--horizontal > .panel {
-    border-bottom: solid .1rem #202020;
+    border-bottom: solid .1rem var(--color-grey-920);
   }
 
   .zone.zone--horizontal > .panel:last-child {

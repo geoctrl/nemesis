@@ -1,11 +1,10 @@
 import React, { Component, createRef } from 'react';
 import { number } from 'prop-types';
 import { Scoped, k } from 'kremling';
-import { Application, Graphics } from "pixi.js";
-import { Viewer } from './canvas/viewer.canvas';
+import { Application, Container } from "pixi.js";
 
-const gameWidth = 1920;
-const gameHeight = 1080;
+import { Viewer } from './canvas/viewer.canvas';
+import { editorState } from './state/editor.state';
 
 export class CanvasComponent extends Component {
   constructor(props) {
@@ -13,7 +12,7 @@ export class CanvasComponent extends Component {
     this.canvasWrapperRef = createRef();
     window.addEventListener('resize', () => {
       const { clientWidth, clientHeight } = this.canvasWrapperRef.current;
-      this.application.renderer.resize(clientWidth, clientHeight);
+      this.pixiApplication.renderer.resize(clientWidth, clientHeight);
       this.viewer.update();
     })
   }
@@ -25,45 +24,49 @@ export class CanvasComponent extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.parentWidth !== this.props.parentWidth) {
       const { clientWidth } = this.canvasWrapperRef.current;
-      this.application.renderer.resize(clientWidth, this.canvasEl.height);
+      this.pixiApplication.renderer.resize(clientWidth, this.canvasEl.height);
       this.viewer.update();
     }
   }
 
   componentDidMount() {
     const { clientWidth, clientHeight } = this.canvasWrapperRef.current;
+    const ratio = window.devicePixelRatio;
 
     // pixi app
-    this.application = new Application({
+    this.pixiApplication = new Application({
       antialias: true,
       resolution: 1,
       width: clientWidth,
       height: clientHeight,
-      backgroundColor: 0x3E4042,
+      backgroundColor: 0x484C50,
     });
 
     // canvas element
-    this.canvasEl = this.canvasWrapperRef.current.appendChild(this.application.view);
+    this.canvasEl = this.canvasWrapperRef.current.appendChild(this.pixiApplication.view);
 
     // Scroll instance
-    this.viewer = new Viewer(this.canvasEl, gameWidth, gameHeight, { gridShow: true, gridSpacing: 50 });
+    const { gridSpacing, gridShow } = editorState.state;
+    this.viewer = new Viewer(this.canvasEl, null, null, { gridShow, gridSpacing });
     const { viewContainer, scrollContainer } = this.viewer;
+    const assetContainer = new Container();
 
-    // view container - add all content into this
-    this.application.stage.addChild(viewContainer);
-    this.application.stage.addChild(scrollContainer);
+    // containers
+    this.pixiApplication.stage.addChild(viewContainer);
+    this.pixiApplication.stage.addChild(scrollContainer);
+    viewContainer.addChild(assetContainer);
 
-    const circle = new Graphics();
-    circle.beginFill(0xFF00FF);
-    circle.drawCircle(300, 300, 100);
-    circle.endFill();
+    // pass to state
+    editorState.set({
+      pixiApplication: this.pixiApplication,
+      canvasEl: this.canvasEl,
+      viewer: this.viewer,
+      viewContainer,
+      assetContainer,
+    });
 
-    viewContainer.addChild(circle);
-
-    setTimeout(() => {
-
-    }, 2000);
-
+    this.viewer.width = 1920;
+    this.viewer.height = 1080;
   }
 
   render() {
@@ -85,5 +88,6 @@ const css = k`
     overflow: hidden;
     position: relative;
     height: 100%;
+    border-top: solid .1rem var(--color-grey-920);
   }
 `;

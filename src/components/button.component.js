@@ -6,7 +6,7 @@ import { Icon } from './icon.component';
 
 export class Button extends Component {
   static propTypes = {
-    actionType: oneOf(['primary', 'flat', 'grey', 'warning', 'flat-light']),
+    actionType: oneOf(['primary', 'flat', 'grey']),
     icon: string,
     children: node,
     block: bool,
@@ -44,14 +44,16 @@ export class Button extends Component {
     return (
       <Tag
         {...rest}
-        className={a(`btn btn--${actionType} ${className || ''}`)
-          .m('btn--icon', icon)
-          .m('btn--block', block)
-          .m('btn--small', small)
-          .m('btn--large', large)
-          .m('btn--dropdown', dropdown)
-          .m('btn--circle', circle)
-          .m('btn--square', square)}
+        className={
+          a(`btn btn--${actionType} ${className || ''}`)
+            .m('btn--icon', icon)
+            .m('btn--block', block)
+            .m('btn--small', small)
+            .m('btn--large', large)
+            .m('btn--dropdown', dropdown)
+            .m('btn--circle', circle)
+            .m('btn--square', square)
+        }
       >
         {icon ? (
           <span className="inner-icon">

@@ -708,6 +708,11 @@
   resolved "https://npm.fontawesome.com/@fortawesome/fontawesome-pro/-/fontawesome-pro-5.8.2.tgz#799a741bf1b6f3956ef8fe14b3a072ec12c8cea2"
   integrity sha512-mTmCSQe8SpWselN/asGq7GZ6UuIkQMBJeyKpKv5RlvW4KLOyI49VYfjUVaM/tCJmd8eMBKt96UR6basJOSCmJw==
 
+"@geoctrl/simple-state@^0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@geoctrl/simple-state/-/simple-state-0.1.7.tgz#50a47ba07d47263b7a0bcb0d65eb06dfd3f8c5de"
+  integrity sha512-U9pNkUNVc7l/nSDRBXjK+n64Zt/JN5km8ufjlsV8N9OVI8D9ILVI6pp/midpGglQ7+Liy0rWzkc0TinRvzIr5A==
+
 "@icoset/icoset-webpack-plugin@^0.0.13":
   version "0.0.13"
   resolved "https://registry.yarnpkg.com/@icoset/icoset-webpack-plugin/-/icoset-webpack-plugin-0.0.13.tgz#408c25be57261514c12f96b62a273ef9f05bd895"

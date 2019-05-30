@@ -1,6 +1,6 @@
 import { Container, Graphics } from 'pixi.js';
 
-const gridColor = 0x000000;
+const gridColor = 0xe3e3e3;
 const gridAlpha = .1;
 
 export class Grid {
@@ -35,8 +35,6 @@ export class Grid {
         line.lineTo(this.width, ((k + 1) * this.spacing) - .5);
         this.container.addChild(line);
       });
-
-      this.container.alpha = gridAlpha;
     }
   }
 

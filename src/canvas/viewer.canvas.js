@@ -6,9 +6,9 @@ const scrollBarSize = 10;
 const scrollSpacing = 4;
 const scrollBarRadius = scrollBarSize / 2;
 const zoneSize = scrollBarSize + (scrollSpacing * 2);
-const zoneColor = 0x2E2F30;
+const zoneColor = 0x343637;
 const scrollBarAlpha = 1;
-const scrollBarColor = 0x3E4042;
+const scrollBarColor = 0x484C50;
 
 export class Viewer {
   constructor(canvasEl, width, height, opts = {}) {
@@ -86,7 +86,7 @@ export class Viewer {
 
     // bottom fill
     this.bottomFill.clear();
-    this.bottomFill.beginFill(0x343637);
+    this.bottomFill.beginFill(0x3B3D3F);
     this.bottomFill.drawRect(this.canvasEl.width - zoneSize, this.canvasEl.height - zoneSize, zoneSize, zoneSize);
 
     // grid

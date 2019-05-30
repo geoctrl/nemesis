@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Scoped, k } from 'kremling';
+
 import { CanvasComponent } from '../canvas.component';
+import { EditorToolbar } from './editor-toolbar.component';
 
 export class Editor extends Component {
-
   componentWillUpdate(nextProps, nextState, nextContext) {
     return nextProps.size === this.props.size;
   }
@@ -13,7 +14,11 @@ export class Editor extends Component {
     return (
       <Scoped css={css}>
         <div className="editor">
-          <CanvasComponent parentWidth={parentWidth} />
+
+          <EditorToolbar />
+          <CanvasComponent
+            parentWidth={parentWidth}
+          />
         </div>
       </Scoped>
     );
@@ -23,6 +28,7 @@ export class Editor extends Component {
 const css = k`
   .editor {
     display: flex;
+    flex-direction: column;
     height: 100%;
     position: relative;
   }
