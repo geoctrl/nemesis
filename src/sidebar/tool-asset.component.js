@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Scoped, k } from 'kremling';
 import { Sprite } from '../canvas/sprite.canvas';
-import uuid from 'uuid/v4';
 
 import { roomState } from '../state/room.state';
 
@@ -25,14 +24,18 @@ export class ToolAsset extends Component {
     const { assets } = this.state;
     return (
       <Scoped css={css}>
-        <div>
-          Assets
-          {assets.map(asset => (
-            <div key={asset.id} onClick={() => this.addSpriteToCurrentRoom(asset)}>
-              <img src={asset.url} alt=""/>
-              {asset.name}
-            </div>
-          ))}
+        <div className="tool">
+          <div className="tool__header">
+            Assets
+          </div>
+          <div className="tool__body">
+            {assets.map(asset => (
+              <div key={asset.id} onClick={() => this.addSpriteToCurrentRoom(asset)}>
+                <img src={asset.url} alt=""/>
+                {asset.name}
+              </div>
+            ))}
+          </div>
         </div>
       </Scoped>
     );

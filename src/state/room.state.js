@@ -18,9 +18,6 @@ class RoomState extends SimpleState {
         ...this.state.hierarchy.slice(i + 1),
       ],
     });
-    // scaleOffset
-    const { scaleOffset } = gameState.state;
-    child.container.scale = { x: scaleOffset, y: scaleOffset};
     editorState.addChild(child.container, i);
   }
 }

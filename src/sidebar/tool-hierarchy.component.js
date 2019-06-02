@@ -21,14 +21,18 @@ export class ToolHierarchy extends Component {
     const { hierarchy } = this.state;
     return (
       <Scoped css={css}>
-        <div>
-          Scene Hierarchy
-          {hierarchy.map(item => (
-            <div key={item.id}>
-              <img src={item.asset.url} alt=""/>
-              {item.name}
-            </div>
-          ))}
+        <div className="tool">
+          <div className="tool__header">
+            Scene Hierarchy
+          </div>
+          <div className="tool__body">
+            {hierarchy.map(item => (
+              <div key={item.id}>
+                <img src={item.asset.url} alt=""/>
+                {item.name}
+              </div>
+            ))}
+          </div>
         </div>
       </Scoped>
     );

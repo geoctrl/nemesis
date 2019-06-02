@@ -133,7 +133,9 @@ const css = k`
     align-items: center;
     padding: .4rem;
     font-size: 1.2rem;
-    border-right: solid .1rem var(--color-grey-920);
+    border: solid .1rem var(--color-grey-800);
+    border-left: none;
+    border-bottom: none;
   }
   
   .button-divider {

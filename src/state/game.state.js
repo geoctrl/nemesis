@@ -4,7 +4,6 @@ const initState = {
   width: null,
   height: null,
   backgroundColor: null,
-  scaleOffset: 3,
   assets: [],
 };
 

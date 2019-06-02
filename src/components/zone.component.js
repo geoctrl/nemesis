@@ -163,7 +163,7 @@ export class Zone extends Component {
       let panelRightPercent = (panelRight / zoneSize) * 100;
       const total = panelLeftPercent + panelRightPercent;
 
-      const minSize = 10 * 100 / zoneSize;
+      const minSize = 30 * 100 / zoneSize;
 
       if (panelLeftPercent < minSize) {
         panelLeftPercent = minSize;
@@ -313,11 +313,11 @@ const css = k`
   }
   
   .zone.zone--vertical > .panel {
-    border-right: solid .1rem var(--color-grey-920);
+    //border-right: solid .1rem var(--color-grey-920);
   }
 
   .zone.zone--vertical > .panel:last-child {
-    border: none;
+    //border: none;
   }
   
   .zone.zone--vertical > .zone-border {
@@ -341,11 +341,11 @@ const css = k`
   }
 
   .zone.zone--horizontal > .panel {
-    border-bottom: solid .1rem var(--color-grey-920);
+    //border-bottom: solid .1rem var(--color-grey-920);
   }
 
   .zone.zone--horizontal > .panel:last-child {
-    border: none;
+    //border: none;
   }
 
   .zone.zone--horizontal > .zone-border {
