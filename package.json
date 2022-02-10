@@ -25,7 +25,7 @@
     "kremling": "^2.0.1",
     "kremling-babel-plugin": "^0.0.1",
     "kremling-loader": "^1.0.2",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "sass": "^1.20.1",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
